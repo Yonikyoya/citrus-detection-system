@@ -1,0 +1,2 @@
+[2026-03-20 12:54:32.093744] To: test@example.com | Subject: 验证码 - register | Body: 您的验证码是: 352698，10分钟内有效。
+[2026-03-20 12:54:32.481637] To: test@example.com | Subject: 欢迎加入果园管理系统 | Body: 你好 testuser，欢迎注册我们的果园管理系统。您的用户ID是: 1

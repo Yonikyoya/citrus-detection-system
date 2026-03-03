@@ -1,0 +1,127 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>用户注册 - 果园管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+      <h2 class="text-2xl font-bold mb-6 text-center">新用户注册</h2>
+      <form id="registerForm" class="space-y-4">
+        <div>
+          <label class="block text-sm font-medium">用户名</label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            required
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">密码</label>
+          <input
+            type="password"
+            id="password"
+            name="password"
+            required
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <div>
+          <label class="block text-sm font-medium">确认密码</label>
+          <input
+            type="password"
+            id="confirm_password"
+            name="confirm_password"
+            required
+            class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500"
+          />
+        </div>
+        <button
+          type="submit"
+          class="w-full bg-green-500 text-white py-2 rounded hover:bg-green-600 font-bold transition"
+        >
+          注册
+        </button>
+      </form>
+      <div class="mt-4 text-center">
+        <a href="/login" class="text-blue-500 text-sm">已有账号？立即登录</a>
+      </div>
+    </div>
+
+    <script>
+      const registerForm = document.getElementById("registerForm");
+
+      registerForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const formData = new FormData(registerForm);
+        const payload = Object.fromEntries(formData.entries());
+
+        // 简单的前端校验
+        if (payload.password !== payload.confirm_password) {
+          alert("两次密码不一致");
+          return;
+        }
+        if (payload.password.length < 8) {
+          alert("密码至少 8 位");
+          return;
+        }
+        const hasLetter = /[a-zA-Z]/.test(payload.password);
+        const hasDigit = /\d/.test(payload.password);
+        if (!hasLetter || !hasDigit) {
+          alert("密码必须包含字母和数字");
+          return;
+        }
+
+        try {
+          console.log("开始注册，请求数据:", payload);
+          
+          // 如果是在 IDE 预览（非 5000 端口），使用完整 URL
+          const apiUrl = window.location.port === '5000' 
+            ? '/api/auth/register' 
+            : 'http://localhost:5000/api/auth/register';
+          
+          const res = await fetch(apiUrl, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          
+          console.log("响应状态:", res.status);
+          
+          // 先检查是否是 HTML 响应（非 JSON）
+          const contentType = res.headers.get("content-type");
+          if (!contentType || !contentType.includes("application/json")) {
+            const text = await res.text();
+            console.error("返回的不是 JSON:", text.substring(0, 200));
+            throw new Error("服务器返回了非 JSON 响应，可能是服务器错误。请查看控制台详情。");
+          }
+          
+          const data = await res.json();
+          console.log("响应数据:", data);
+          
+          if (data.success) {
+            alert("注册成功！您的用户 ID 是：" + data.user_id);
+            // 跳转到登录页（使用完整 URL，防止从 IDE 访问时跳转回 63342 端口）
+            window.location.href = 'http://localhost:5000/login';
+          } else {
+            alert("注册失败：" + (data.message || "未知错误"));
+          }
+        } catch (err) {
+          console.error("注册请求异常:", err);
+          let errorMsg = err.message;
+          
+          // 如果是网络错误，给出更友好的提示
+          if (err.name === "TypeError" && err.message.includes("fetch")) {
+            errorMsg = "无法连接到服务器，请检查：\n1. 后端服务是否已启动（运行 python app.py）\n2. 网址是否正确\n3. 防火墙是否阻止连接";
+          }
+          
+          alert("注册请求失败：" + errorMsg);
+        }
+      });
+    </script>
+  </body>
+</html>

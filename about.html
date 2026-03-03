@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能农业可视化平台 · 关于系统</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>橘视 · 农业AI</span>
+            </div>
+            <ul class="nav-menu">
+                <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i> 首页</a>
+                <a href="/detect" class="nav-item"><i class="fas fa-camera"></i> 智能检测</a>
+                <a href="/data" class="nav-item"><i class="fas fa-database"></i> 数据中心</a>
+                <a href="/analysis" class="nav-item"><i class="fas fa-chart-line"></i> 数据分析</a>
+                <a href="/warning" class="nav-item"><i class="fas fa-exclamation-triangle"></i> 预警中心</a>
+                <a href="/about" class="nav-item active"><i class="fas fa-info-circle"></i> 关于系统</a>
+            </ul>
+        </nav>
+
+        <div class="about-grid">
+            <div class="tech-stack">
+                <h3><i class="fas fa-cogs"></i> 技术栈</h3>
+                <ul>
+                    <li><i class="fas fa-code"></i> 前端：HTML5/CSS3/JS + ECharts</li>
+                    <li><i class="fas fa-server"></i> 后端：Flask + Python</li>
+                    <li><i class="fas fa-brain"></i> AI模型：YOLOv10 (柑橘成熟度/腐烂检测)</li>
+                    <li><i class="fas fa-database"></i> 数据库：SQLite</li>
+                    <li><i class="fas fa-chart-line"></i> 可视化：ECharts</li>
+                </ul>
+            </div>
+            <div class="tech-stack">
+                <h3><i class="fas fa-sitemap"></i> 系统架构</h3>
+                <p>浏览器 ↔ Flask后端 ↔ YOLOv10模型 ↔ SQLite</p>
+                <p>数据流：图像上传 → 模型推理 → 结果存储 → 前端展示</p>
+            </div>
+        </div>
+        <div class="card">
+            <h3><i class="fas fa-file-alt"></i> 模型原理</h3>
+            <p>本系统使用YOLOv8目标检测模型，在自建柑橘数据集上微调训练。可识别未成熟、成熟、腐烂三种状态，并估算糖度和采摘建议。</p>
+        </div>
+
+        <footer>
+            <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+        </footer>
+    </div>
+
+    <script src="assistantReconnect.js"></script>
+    <script src="markdown.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

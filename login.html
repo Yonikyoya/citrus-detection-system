@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>用户登录 - 果园管理系统</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+    <div class="bg-white p-8 rounded shadow-md w-96">
+        <h2 class="text-2xl font-bold mb-6 text-center">用户登录</h2>
+        <form id="loginForm" class="space-y-4">
+            <div>
+                <label class="block text-sm font-medium">用户名或邮箱</label>
+                <input type="text" id="username" name="username" required class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">密码</label>
+                <input type="password" id="password" name="password" required class="w-full border p-2 rounded focus:ring-2 focus:ring-blue-500">
+            </div>
+            <div>
+                <label class="block text-sm font-medium">验证码</label>
+                <div class="flex space-x-2">
+                    <input type="text" id="captcha_answer" name="captcha_answer" required class="flex-1 border p-2 rounded focus:ring-2 focus:ring-blue-500">
+                    <div id="captchaBox" class="bg-gray-200 px-3 py-2 rounded text-lg font-mono flex items-center justify-center cursor-pointer select-none" title="点击刷新验证码">获取中...</div>
+                    <input type="hidden" id="captcha_id" name="captcha_id">
+                </div>
+            </div>
+            <div class="flex items-center">
+                <input type="checkbox" id="remember_me" name="remember_me" class="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded">
+                <label for="remember_me" class="ml-2 block text-sm text-gray-900">
+                    记住我
+                </label>
+            </div>
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 font-bold transition">登录</button>
+        </form>
+        <div class="mt-4 text-center">
+            <a href="/register" class="text-blue-500 text-sm">还没有账号？立即注册</a>
+        </div>
+    </div>
+
+    <script>
+        const loginForm = document.getElementById('loginForm');
+        const captchaBox = document.getElementById('captchaBox');
+        const captchaIdInput = document.getElementById('captcha_id');
+
+        async function refreshCaptcha() {
+            try {
+                const res = await fetch('/api/auth/captcha');
+                const data = await res.json();
+                captchaBox.innerText = data.question;
+                captchaIdInput.value = data.captcha_id;
+            } catch (err) {
+                captchaBox.innerText = '刷新失败';
+            }
+        }
+
+        captchaBox.addEventListener('click', refreshCaptcha);
+        refreshCaptcha();
+
+        loginForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(loginForm);
+            const payload = Object.fromEntries(formData.entries());
+            payload.remember_me = !!payload.remember_me;
+
+            try {
+                const res = await fetch('/api/auth/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await res.json();
+                if (data.success) {
+                    alert('登录成功！');
+                    console.log('Token:', data.token);
+                    
+                    // 保存到 localStorage（供 fetch 使用）
+                    localStorage.setItem('token', data.token);
+                    
+                    // Cookie 已由后端在响应中设置
+                    console.log('等待 Cookie 设置...');
+                    
+                    // 跳转到仪表盘
+                    window.location.href = 'http://localhost:5000/dashboard';
+                } else {
+                    alert(data.message);
+                    refreshCaptcha(); // 登录失败强制刷新验证码
+                }
+            } catch (err) {
+                alert('登录请求失败');
+            }
+        });
+    </script>
+</body>
+</html>

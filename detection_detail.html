@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能农业可视化平台 · 检测详情</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <i class="fas fa-leaf"></i>
+          <span>橘视 · 农业AI</span>
+        </div>
+        <ul class="nav-menu">
+          <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i> 首页</a>
+          <a href="/detect" class="nav-item"><i class="fas fa-camera"></i> 智能检测</a>
+          <a href="/data" class="nav-item"><i class="fas fa-database"></i> 数据中心</a>
+          <a href="/analysis" class="nav-item"><i class="fas fa-chart-line"></i> 数据分析</a>
+          <a href="/warning" class="nav-item"><i class="fas fa-exclamation-triangle"></i> 预警中心</a>
+          <a href="/about" class="nav-item"><i class="fas fa-info-circle"></i> 关于系统</a>
+        </ul>
+      </nav>
+
+      <div class="card">
+        <h2 class="card-title"><i class="fas fa-image"></i> 检测详情</h2>
+        <div id="detailStatus" style="color: var(--gray-color); margin-bottom: 15px">
+          正在加载...
+        </div>
+        <div id="detailBody" style="display: none">
+          <div class="image-preview" style="display: block">
+            <img id="detailImage" src="" alt="检测图像" />
+            <div style="margin-top: 10px; display: flex; gap: 10px; justify-content: center">
+              <button class="btn" id="reloadImageBtn" style="display: none">重新加载图片</button>
+              <a class="btn" id="backToDetect" href="/detect">返回检测</a>
+            </div>
+          </div>
+          <div style="margin-top: 20px">
+            <div class="stats-grid-mini">
+              <div class="stat-item-mini">
+                <div class="stat-value" id="detailMaturity">-</div>
+                <div class="stat-label">成熟度</div>
+              </div>
+              <div class="stat-item-mini">
+                <div class="stat-value" id="detailSugar">-</div>
+                <div class="stat-label">糖度</div>
+              </div>
+              <div class="stat-item-mini">
+                <div class="stat-value" id="detailDays">-</div>
+                <div class="stat-label">采摘期</div>
+              </div>
+              <div class="stat-item-mini">
+                <div class="stat-value" id="detailClass">-</div>
+                <div class="stat-label">类别</div>
+              </div>
+            </div>
+            <div class="recommendations" style="margin-top: 15px">
+              <h3><i class="fas fa-lightbulb"></i> 采摘建议</h3>
+              <p id="detailSuggestion">-</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <footer>
+        <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+      </footer>
+    </div>
+
+    <script src="assistantReconnect.js"></script>
+    <script src="markdown.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

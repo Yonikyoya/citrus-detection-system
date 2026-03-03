@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>智能农业可视化平台 · 数据分析</title>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css" />
+  </head>
+  <body>
+    <div class="container">
+      <nav class="navbar">
+        <div class="logo">
+          <i class="fas fa-leaf"></i>
+          <span>橘视 · 农业AI</span>
+        </div>
+        <ul class="nav-menu">
+          <a href="/dashboard" class="nav-item"
+            ><i class="fas fa-home"></i> 首页</a
+          >
+          <a href="/detect" class="nav-item"
+            ><i class="fas fa-camera"></i> 智能检测</a
+          >
+          <a href="/data" class="nav-item"
+            ><i class="fas fa-database"></i> 数据中心</a
+          >
+          <a href="/analysis" class="nav-item active"
+            ><i class="fas fa-chart-line"></i> 数据分析</a
+          >
+          <a href="/warning" class="nav-item"
+            ><i class="fas fa-exclamation-triangle"></i> 预警中心</a
+          >
+          <a href="/about" class="nav-item"
+            ><i class="fas fa-info-circle"></i> 关于系统</a
+          >
+        </ul>
+      </nav>
+
+      <div class="chart-container">
+        <div class="chart-box" id="trendChart2"></div>
+        <div class="chart-box" id="barChart"></div>
+        <div class="chart-box" id="rottenChart"></div>
+        <div class="chart-box" id="sugarChart"></div>
+      </div>
+
+      <footer>
+        <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+      </footer>
+    </div>
+
+    <script src="assistantReconnect.js"></script>
+    <script src="markdown.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

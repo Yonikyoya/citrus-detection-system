@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# 虚拟环境
+venv/
+.env/
+
+# 数据库
+*.db
+
+# 上传图片
+uploads/
+
+# IDE
+.vscode/
+.idea/
+
+# Mac
+.DS_Store

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能农业可视化平台 · 数据中心</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>橘视 · 农业AI</span>
+            </div>
+            <ul class="nav-menu">
+                <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i> 首页</a>
+                <a href="/detect" class="nav-item"><i class="fas fa-camera"></i> 智能检测</a>
+                <a href="/data" class="nav-item active"><i class="fas fa-database"></i> 数据中心</a>
+                <a href="/analysis" class="nav-item"><i class="fas fa-chart-line"></i> 数据分析</a>
+                <a href="/warning" class="nav-item"><i class="fas fa-exclamation-triangle"></i> 预警中心</a>
+                <a href="/about" class="nav-item"><i class="fas fa-info-circle"></i> 关于系统</a>
+            </ul>
+        </nav>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-filter"></i> 筛选与导出</h2>
+            <div class="filter-bar">
+                <input type="text" id="searchImage" placeholder="图像名称">
+                <select id="filterMaturity">
+                    <option value="">所有成熟度</option>
+                    <option value="unripe">未成熟</option>
+                    <option value="ripe">成熟</option>
+                    <option value="overripe">过熟/腐烂</option>
+                </select>
+                <input type="date" id="startDate">
+                <span>至</span>
+                <input type="date" id="endDate">
+                <button id="applyFilter"><i class="fas fa-search"></i> 筛选</button>
+                <button id="exportExcel"><i class="fas fa-file-excel"></i> 导出Excel</button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-table"></i> 历史记录</h2>
+            <table id="dataTable">
+                <thead>
+                    <tr>
+                        <th>时间</th>
+                        <th>图像名称</th>
+                        <th>成熟度</th>
+                        <th>糖度</th>
+                        <th>建议</th>
+                        <th>操作</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+            <div class="pagination">
+                <button id="prevPage"><i class="fas fa-chevron-left"></i></button>
+                <span id="pageInfo">第1页</span>
+                <button id="nextPage"><i class="fas fa-chevron-right"></i></button>
+            </div>
+        </div>
+
+        <footer>
+            <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+        </footer>
+    </div>
+
+    <script src="assistantReconnect.js"></script>
+    <script src="markdown.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

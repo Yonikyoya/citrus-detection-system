@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能农业可视化平台 · 智能检测</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>橘视 · 农业AI</span>
+            </div>
+            <ul class="nav-menu">
+                <a href="/dashboard" class="nav-item"><i class="fas fa-home"></i> 首页</a>
+                <a href="/detect" class="nav-item active"><i class="fas fa-camera"></i> 智能检测</a>
+                <a href="/data" class="nav-item"><i class="fas fa-database"></i> 数据中心</a>
+                <a href="/analysis" class="nav-item"><i class="fas fa-chart-line"></i> 数据分析</a>
+                <a href="/warning" class="nav-item"><i class="fas fa-exclamation-triangle"></i> 预警中心</a>
+                <a href="/about" class="nav-item"><i class="fas fa-info-circle"></i> 关于系统</a>
+            </ul>
+        </nav>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-cloud-upload-alt"></i> 柑橘图像上传</h2>
+            <div class="upload-area" id="uploadArea">
+                <i class="fas fa-file-upload"></i>
+                <p><strong>点击或拖拽上传柑橘图像</strong></p>
+                <p>支持 JPG, PNG, JPEG 格式，最大文件大小 5MB</p>
+                <button class="btn" id="uploadBtn">选择图像文件</button>
+                <input type="file" id="fileInput" accept="image/*">
+            </div>
+
+            <div class="image-preview" id="imagePreview">
+                <h3>预览图像</h3>
+                <img id="previewImage" src="" alt="柑橘图像预览">
+            </div>
+
+            <div class="action-buttons">
+                <button class="action-btn detect-btn" id="detectBtn">
+                    <i class="fas fa-search"></i> 开始检测成熟度
+                </button>
+                <button class="action-btn reset-btn" id="resetBtn">
+                    <i class="fas fa-redo"></i> 重置
+                </button>
+                <button class="action-btn save-result-btn" id="saveResultBtn" disabled>
+                    <i class="fas fa-save"></i> 保存结果
+                </button>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-chart-line"></i> 成熟度检测结果</h2>
+            <div class="result-container" id="resultContainer">
+                <div class="maturity-level">
+                    <span class="maturity-label">成熟度等级</span>
+                    <span class="maturity-value" id="maturityValue">未检测</span>
+                </div>
+                <div class="maturity-bar">
+                    <div class="maturity-fill" id="maturityFill"></div>
+                </div>
+                <div class="maturity-indicators">
+                    <span>未成熟</span><span>部分成熟</span><span>完全成熟</span><span>过熟</span>
+                </div>
+                <div class="stats-grid-mini">
+                    <div class="stat-item-mini">
+                        <div class="stat-value" id="colorScore">-</div>
+                        <div class="stat-label">颜色成熟度</div>
+                    </div>
+                    <div class="stat-item-mini">
+                        <div class="stat-value" id="sizeValue">-</div>
+                        <div class="stat-label">果实直径</div>
+                    </div>
+                    <div class="stat-item-mini">
+                        <div class="stat-value" id="sugarContent">-</div>
+                        <div class="stat-label">糖度预测</div>
+                    </div>
+                    <div class="stat-item-mini">
+                        <div class="stat-value" id="harvestDays">-</div>
+                        <div class="stat-label">建议采摘期</div>
+                    </div>
+                </div>
+                <div class="recommendations">
+                    <h3><i class="fas fa-lightbulb"></i> 采摘建议</h3>
+                    <p id="recommendationText">请上传柑橘图像并点击检测</p>
+                </div>
+            </div>
+            <div id="noResultMessage" style="text-align: center; padding: 40px; color: var(--gray-color);">
+                <i class="fas fa-search" style="font-size: 3rem; color: #ddd;"></i>
+                <p>检测结果将显示在此处</p>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-bolt"></i> 快速跳转 · 最近检测</h2>
+            <div id="quickHistory" style="display: flex; flex-wrap: wrap; gap: 15px;"></div>
+        </div>
+
+        <footer>
+            <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+        </footer>
+    </div>
+
+    <script src="assistantReconnect.js"></script>
+    <script src="markdown.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

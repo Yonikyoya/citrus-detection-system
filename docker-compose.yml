@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  citrus-app:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./data:/app/data
+      - ./uploads:/app/uploads
+      - ./email_logs.txt:/app/email_logs.txt
+    environment:
+      - JWT_SECRET=citrus-orchard-secret-key-2024
+      - FLASK_DEBUG=0
+      - LOG_LEVEL=INFO
+    restart: always
