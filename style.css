@@ -195,6 +195,7 @@ body {
     display: none;
 }
 
+<<<<<<< HEAD
 .quality-hint {
     margin: 10px 0 0;
     padding: 10px 12px;
@@ -222,6 +223,8 @@ body {
     color: #b71c1c;
 }
 
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 .image-preview {
     display: none;
     margin-top: 20px;
@@ -583,6 +586,7 @@ footer {
     justify-content: center;
     font-size: 2rem;
     transition: var(--transition);
+<<<<<<< HEAD
     z-index: 9999;
 }
 
@@ -605,6 +609,9 @@ footer {
 
 .assistant-badge.show {
     display: flex;
+=======
+    z-index: 1000;
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 }
 
 .chat-toggle:hover {
@@ -624,7 +631,11 @@ footer {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+<<<<<<< HEAD
     z-index: 9999;
+=======
+    z-index: 999;
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 0;
     transform: translateY(20px);
@@ -644,7 +655,10 @@ footer {
     display: flex;
     justify-content: space-between;
     align-items: center;
+<<<<<<< HEAD
     touch-action: none;
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 }
 
 .chat-header h3 {
@@ -655,23 +669,30 @@ footer {
     gap: 8px;
 }
 
+<<<<<<< HEAD
 .assistant-actions {
     display: flex;
     gap: 8px;
 }
 
 .assistant-btn {
+=======
+.chat-header .close-btn {
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     background: none;
     border: none;
     color: white;
     font-size: 1.2rem;
     cursor: pointer;
+<<<<<<< HEAD
     padding: 4px 6px;
     border-radius: 8px;
 }
 
 .assistant-btn:hover {
     background: rgba(255, 255, 255, 0.18);
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 }
 
 .chat-messages {
@@ -714,6 +735,7 @@ footer {
     margin-top: 5px;
 }
 
+<<<<<<< HEAD
 .assistant-markdown-message .assistant-markdown {
     font-size: 0.95rem;
 }
@@ -780,6 +802,8 @@ footer {
     margin: 6px 0;
 }
 
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 .chat-input-area {
     display: flex;
     padding: 15px;
@@ -817,6 +841,7 @@ footer {
     cursor: not-allowed;
 }
 
+<<<<<<< HEAD
 .assistant-no-select {
     user-select: none;
 }
@@ -894,6 +919,8 @@ footer {
     cursor: nesw-resize;
 }
 
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 /* 移动端适配 */
 @media (max-width: 576px) {
     .chat-window {
@@ -902,4 +929,8 @@ footer {
         left: 20px;
         bottom: 80px;
     }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad

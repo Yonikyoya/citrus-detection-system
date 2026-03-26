@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+<<<<<<< HEAD
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -96,3 +97,76 @@
     <script src="script.js"></script>
   </body>
 </html>
+=======
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能农业可视化平台 · 首页</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <nav class="navbar">
+            <div class="logo">
+                <i class="fas fa-leaf"></i>
+                <span>橘视 · 农业AI</span>
+            </div>
+            <ul class="nav-menu">
+                <a href="index.html" class="nav-item active"><i class="fas fa-home"></i> 首页</a>
+                <a href="detect.html" class="nav-item"><i class="fas fa-camera"></i> 智能检测</a>
+                <a href="data.html" class="nav-item"><i class="fas fa-database"></i> 数据中心</a>
+                <a href="analysis.html" class="nav-item"><i class="fas fa-chart-line"></i> 数据分析</a>
+                <a href="warning.html" class="nav-item"><i class="fas fa-exclamation-triangle"></i> 预警中心</a>
+                <a href="about.html" class="nav-item"><i class="fas fa-info-circle"></i> 关于系统</a>
+            </ul>
+        </nav>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <i class="fas fa-calendar-day"></i>
+                <div class="value" id="todayCount">158</div>
+                <div class="label">今日检测数</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-check-circle"></i>
+                <div class="value" id="ripePercent">72%</div>
+                <div class="label">成熟果比例</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-times-circle"></i>
+                <div class="value" id="rottenPercent">5%</div>
+                <div class="label">腐烂比例</div>
+            </div>
+            <div class="stat-card">
+                <i class="fas fa-tachometer-alt"></i>
+                <div class="value" id="avgSugar">11.2 °Brix</div>
+                <div class="label">平均糖度</div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-chart-bar"></i> 近7天成熟度趋势</h2>
+            <div id="trendChart" style="height: 300px;"></div>
+        </div>
+
+        <div class="card">
+            <h2 class="card-title"><i class="fas fa-history"></i> 最近检测记录</h2>
+            <table id="recentTable">
+                <thead>
+                    <tr><th>时间</th><th>图像</th><th>成熟度</th><th>糖度</th><th>建议</th></tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+
+        <footer>
+            <p>智能农业可视化平台 &copy; 2025 | 毕业设计作品</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad

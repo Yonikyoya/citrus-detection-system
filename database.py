@@ -1,4 +1,5 @@
 import sqlite3
+<<<<<<< HEAD
 import os
 from datetime import datetime, timedelta
 
@@ -182,6 +183,48 @@ def get_stats(user_id):
     c.execute("SELECT AVG(maturity) FROM detections WHERE user_id = ?", (user_id,))
     avg_maturity = c.fetchone()[0] or 0
     c.execute("SELECT COUNT(*) FROM detections WHERE maturity >= 80 AND user_id = ?", (user_id,))
+=======
+from datetime import datetime, timedelta
+DB_NAME = "citrus.db"
+
+def init_db():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        CREATE TABLE IF NOT EXISTS detections (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            image_name TEXT,
+            class_name TEXT,
+            maturity INTEGER,
+            days INTEGER,
+            sugar REAL,
+            suggestion TEXT,
+            detect_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+        )
+    ''')
+    conn.commit()
+    conn.close()
+
+def insert_detection(filename, class_name, maturity, days, sugar, suggestion):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        INSERT INTO detections 
+        (image_name, class_name, maturity, days, sugar, suggestion)
+        VALUES (?, ?, ?, ?, ?, ?)
+    ''', (filename, class_name, maturity, days, sugar, suggestion))
+    conn.commit()
+    conn.close()
+
+def get_stats():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute("SELECT COUNT(*) FROM detections")
+    total = c.fetchone()[0]
+    c.execute("SELECT AVG(maturity) FROM detections")
+    avg_maturity = c.fetchone()[0] or 0
+    c.execute("SELECT COUNT(*) FROM detections WHERE maturity >= 80")
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     ripe_count = c.fetchone()[0]
     conn.close()
     ripe_rate = round((ripe_count / total) * 100, 1) if total > 0 else 0
@@ -191,6 +234,7 @@ def get_stats(user_id):
         "ripe_rate": ripe_rate
     }
 
+<<<<<<< HEAD
 def get_history(user_id, limit=5):
     conn = _connect()
     c = conn.cursor()
@@ -201,10 +245,22 @@ def get_history(user_id, limit=5):
         ORDER BY detect_time DESC
         LIMIT ?
     ''', (user_id, limit))
+=======
+def get_history(limit=5):
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+    c.execute('''
+        SELECT detect_time, image_name, maturity, sugar, suggestion, class_name
+        FROM detections
+        ORDER BY detect_time DESC
+        LIMIT ?
+    ''', (limit,))
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     rows = c.fetchall()
     conn.close()
     return rows
 
+<<<<<<< HEAD
 def get_detection_by_id(record_id, user_id):
     conn = _connect(row_factory=sqlite3.Row)
     cursor = conn.cursor()
@@ -231,18 +287,53 @@ def query_records_with_filters(user_id, page, page_size, image_name="", maturity
     base_sql = "FROM detections WHERE user_id = ?"
     params = [user_id]
 
+=======
+# ========== 新增功能：筛选、分页、删除 ==========
+
+def query_records_with_filters(page, page_size, image_name="", maturity="", start_date="", end_date=""):
+    """
+    分页查询符合条件的记录
+    返回: {
+        "total": 总记录数,
+        "page": 当前页,
+        "pageSize": 每页大小,
+        "data": [ {id, time, image, maturity, sugar, suggestion, class}, ... ]
+    }
+    """
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row  # 使查询结果可以用列名访问
+    cursor = conn.cursor()
+
+    # 基础SQL（WHERE 1=1 便于动态拼接）
+    base_sql = "FROM detections WHERE 1=1"
+    params = []
+
+    # 图片名称模糊查询
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     if image_name:
         base_sql += " AND image_name LIKE ?"
         params.append(f"%{image_name}%")
 
+<<<<<<< HEAD
+=======
+    # 成熟度分类映射
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     if maturity:
         if maturity == "unripe":
             base_sql += " AND class_name = 'unripe_orange'"
         elif maturity == "ripe":
             base_sql += " AND class_name = 'ripe_orange'"
         elif maturity == "overripe":
+<<<<<<< HEAD
             base_sql += " AND (class_name = 'rotten_orange' OR maturity > 90)"
 
+=======
+            # 过熟/腐烂：包括腐烂和成熟度很高的果实（可根据需要调整）
+            base_sql += " AND (class_name = 'rotten_orange' OR maturity > 90)"
+        # 可添加其他分类
+
+    # 日期范围筛选
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     if start_date:
         base_sql += " AND date(detect_time) >= ?"
         params.append(start_date)
@@ -250,10 +341,18 @@ def query_records_with_filters(user_id, page, page_size, image_name="", maturity
         base_sql += " AND date(detect_time) <= ?"
         params.append(end_date)
 
+<<<<<<< HEAD
+=======
+    # 查询总记录数
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     count_sql = f"SELECT COUNT(*) {base_sql}"
     cursor.execute(count_sql, params)
     total = cursor.fetchone()[0]
 
+<<<<<<< HEAD
+=======
+    # 分页查询数据
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     data_sql = f"""
         SELECT id, detect_time as time, image_name as image, 
                maturity, sugar, suggestion, class_name as class
@@ -266,6 +365,10 @@ def query_records_with_filters(user_id, page, page_size, image_name="", maturity
     rows = cursor.fetchall()
     conn.close()
 
+<<<<<<< HEAD
+=======
+    # 转换为字典列表
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     data = [dict(row) for row in rows]
     return {
         "total": total,
@@ -274,12 +377,26 @@ def query_records_with_filters(user_id, page, page_size, image_name="", maturity
         "data": data
     }
 
+<<<<<<< HEAD
 def query_all_records_with_filters(user_id, image_name="", maturity="", start_date="", end_date=""):
     conn = _connect(row_factory=sqlite3.Row)
     cursor = conn.cursor()
 
     base_sql = "FROM detections WHERE user_id = ?"
     params = [user_id]
+=======
+def query_all_records_with_filters(image_name="", maturity="", start_date="", end_date=""):
+    """
+    导出所有符合筛选条件的记录（不分页）
+    返回: 列表，每个元素为 {time, image, maturity, sugar, suggestion, class}
+    """
+    conn = sqlite3.connect(DB_NAME)
+    conn.row_factory = sqlite3.Row
+    cursor = conn.cursor()
+
+    base_sql = "FROM detections WHERE 1=1"
+    params = []
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
     if image_name:
         base_sql += " AND image_name LIKE ?"
@@ -310,6 +427,7 @@ def query_all_records_with_filters(user_id, image_name="", maturity="", start_da
 
     return [dict(row) for row in rows]
 
+<<<<<<< HEAD
 def insert_chat_message(user_id, session_id, role, content):
     conn = _connect()
     c = conn.cursor()
@@ -344,11 +462,19 @@ def delete_detection_by_id(record_id, user_id):
     conn = _connect()
     cursor = conn.cursor()
     cursor.execute("DELETE FROM detections WHERE id = ? AND user_id = ?", (record_id, user_id))
+=======
+def delete_detection_by_id(record_id):
+    """根据ID删除记录，返回是否成功"""
+    conn = sqlite3.connect(DB_NAME)
+    cursor = conn.cursor()
+    cursor.execute("DELETE FROM detections WHERE id = ?", (record_id,))
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     conn.commit()
     affected = cursor.rowcount
     conn.close()
     return affected > 0
 
+<<<<<<< HEAD
 def get_dashboard_stats(user_id):
     conn = _connect()
     c = conn.cursor()
@@ -363,19 +489,46 @@ def get_dashboard_stats(user_id):
 
     # 成熟果数量
     c.execute("SELECT COUNT(*) FROM detections WHERE user_id = ? AND (class_name = 'ripe_orange' OR maturity >= 80)", (user_id,))
+=======
+def get_dashboard_stats():
+    conn = sqlite3.connect(DB_NAME)
+    c = conn.cursor()
+
+    # 今日检测数
+    c.execute("SELECT COUNT(*) FROM detections WHERE date(detect_time) = date('now')")
+    today_count = c.fetchone()[0]
+
+    # 总记录数
+    c.execute("SELECT COUNT(*) FROM detections")
+    total = c.fetchone()[0]
+
+    # 成熟果数量 (可根据业务调整：class='ripe_orange' 或 maturity>=80)
+    c.execute("SELECT COUNT(*) FROM detections WHERE class_name = 'ripe_orange' OR maturity >= 80")
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     ripe_count = c.fetchone()[0]
     ripe_rate = round((ripe_count / total) * 100, 1) if total else 0
 
     # 腐烂数量
+<<<<<<< HEAD
     c.execute("SELECT COUNT(*) FROM detections WHERE user_id = ? AND class_name = 'rotten_orange'", (user_id,))
+=======
+    c.execute("SELECT COUNT(*) FROM detections WHERE class_name = 'rotten_orange'")
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     rotten_count = c.fetchone()[0]
     rotten_rate = round((rotten_count / total) * 100, 1) if total else 0
 
     # 平均糖度
+<<<<<<< HEAD
     c.execute("SELECT AVG(sugar) FROM detections WHERE user_id = ?", (user_id,))
     avg_sugar = round(c.fetchone()[0] or 0, 1)
 
     # 近7天趋势
+=======
+    c.execute("SELECT AVG(sugar) FROM detections")
+    avg_sugar = round(c.fetchone()[0] or 0, 1)
+
+    # 近7天趋势（最近7天每天的成熟度平均值）
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     trend_dates = []
     trend_values = []
     for i in range(6, -1, -1):
@@ -383,8 +536,13 @@ def get_dashboard_stats(user_id):
         date_str = (datetime.now() - timedelta(days=i)).strftime('%Y-%m-%d')
         c.execute('''
             SELECT AVG(maturity) FROM detections 
+<<<<<<< HEAD
             WHERE user_id = ? AND date(detect_time) = ?
         ''', (user_id, date_str))
+=======
+            WHERE date(detect_time) = ?
+        ''', (date_str,))
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
         avg = c.fetchone()[0] or 0
         trend_dates.append(day)
         trend_values.append(round(avg, 1))
@@ -397,6 +555,7 @@ def get_dashboard_stats(user_id):
         "avg_sugar": avg_sugar,
         "trend_dates": trend_dates,
         "trend_values": trend_values
+<<<<<<< HEAD
     }
 
 # ========== 用户管理相关接口 ==========
@@ -619,3 +778,6 @@ def get_users_by_orchard(orchard_id):
     conn.close()
     return [dict(r) for r in rows]
 
+=======
+    }
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad

@@ -1,5 +1,6 @@
 import os
 import uuid
+<<<<<<< HEAD
 import io
 import csv
 import logging
@@ -12,10 +13,21 @@ from datetime import datetime
 
 from flask import Flask, request, jsonify, send_file, redirect, send_from_directory, session, g, render_template
 from flask_cors import CORS
+=======
+import cv2
+import numpy as np
+import io
+import csv
+
+from flask import Flask, request, jsonify, send_file
+from flask_cors import CORS
+from ultralytics import YOLO
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
 from database import (
     init_db, insert_detection, get_stats, get_history,
     query_records_with_filters, query_all_records_with_filters,
+<<<<<<< HEAD
     delete_detection_by_id, get_dashboard_stats, get_detection_by_id,
     insert_chat_message, get_chat_context, clear_chat_history,
     create_user, get_user_by_username, create_orchard, get_users_by_orchard, get_orchard_by_id,
@@ -43,10 +55,15 @@ def send_mock_email(to, subject, body):
     with open(log_file, "a", encoding="utf-8") as f:
         f.write(f"[{datetime.now()}] To: {to} | Subject: {subject} | Body: {body}\n")
     logging.info(f"Mock email sent to {to} (logged to {log_file})")
+=======
+    delete_detection_by_id, get_dashboard_stats
+)
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
 # ==========================
 # 初始化 Flask
 # ==========================
+<<<<<<< HEAD
 app = Flask(__name__, template_folder='.')
 app.secret_key = secrets.token_hex(16)
 CORS(app, supports_credentials=True)
@@ -76,6 +93,10 @@ def not_found(error):
 @app.errorhandler(500)
 def internal_error(error):
     return jsonify({"success": False, "message": "服务器内部错误"}), 500
+=======
+app = Flask(__name__)
+CORS(app)
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
 # ==========================
 # 初始化数据库
@@ -85,6 +106,7 @@ init_db()
 # ==========================
 # 加载模型
 # ==========================
+<<<<<<< HEAD
 _model = None
 MODEL_PATH = os.environ.get("MODEL_PATH", "yolov10n.pt")
 UPLOAD_FOLDER = os.environ.get("UPLOAD_FOLDER", "uploads")
@@ -382,6 +404,12 @@ def get_me():
     del user["password_hash"]
     return jsonify({"success": True, "data": user})
 
+=======
+model = YOLO("runs/detect/train5/weights/best.pt")
+UPLOAD_FOLDER = "uploads"
+os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 # ==========================
 # 业务逻辑函数
 # ==========================
@@ -395,13 +423,25 @@ def get_maturity_info(class_name):
     return 0, 0, "未知状态"
 
 def analyze_color_maturity(image, box):
+<<<<<<< HEAD
     import cv2
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     x1, y1, x2, y2 = map(int, box.xyxy[0])
     fruit = image[y1:y2, x1:x2]
     hsv = cv2.cvtColor(fruit, cv2.COLOR_BGR2HSV)
     h_mean = hsv[:, :, 0].mean()
+<<<<<<< HEAD
     cm = maturity_from_hue_cv(h_mean)
     return cm.label, cm.maturity, cm.hue_cv
+=======
+    if h_mean > 60:
+        return "偏青", 40
+    elif 35 < h_mean <= 60:
+        return "转色中", 70
+    else:
+        return "橙色成熟", 90
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
 def estimate_diameter(box):
     x1, y1, x2, y2 = map(int, box.xyxy[0])
@@ -416,7 +456,10 @@ def predict_sugar_content(maturity):
 # 路由
 # ==========================
 @app.route("/detect", methods=["POST"])
+<<<<<<< HEAD
 @login_required
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 def detect():
     if "image" not in request.files:
         return jsonify({"error": "No image uploaded"}), 400
@@ -426,13 +469,17 @@ def detect():
     filepath = os.path.join(UPLOAD_FOLDER, filename)
     file.save(filepath)
 
+<<<<<<< HEAD
     model = get_model()
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     results = model(filepath)
     result = results[0]
     orig_img = result.orig_img
     boxes = result.boxes
 
     if len(boxes) == 0:
+<<<<<<< HEAD
         q = None
         msg = "未检测到柑橘"
         try:
@@ -446,10 +493,14 @@ def detect():
             payload["_debug"] = {"quality": q}
         logging.info("detect_no_object msg=%s quality=%s", msg, q)
         return jsonify(payload), 200
+=======
+        return jsonify({"error": "未检测到柑橘"}), 200
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
     best_box = max(boxes, key=lambda b: float(b.conf[0]))
     class_id = int(best_box.cls[0])
     class_name = model.names[class_id]
+<<<<<<< HEAD
     conf = float(best_box.conf[0])
 
     color_desc, color_maturity, hue_cv = analyze_color_maturity(orig_img, best_box)
@@ -464,6 +515,17 @@ def detect():
     insert_detection(g.user_id, filename, class_name, maturity, days, sugar, suggestion)
 
     resp = {
+=======
+
+    color_desc, color_maturity = analyze_color_maturity(orig_img, best_box)
+    diameter = estimate_diameter(best_box)
+    sugar = predict_sugar_content(color_maturity)
+    maturity, days, suggestion = get_maturity_info(class_name)
+
+    insert_detection(filename, class_name, maturity, days, sugar, suggestion)
+
+    return jsonify({
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
         "class": class_name,
         "maturity": maturity,
         "days": days,
@@ -471,6 +533,7 @@ def detect():
         "color": color_desc,
         "diameter": diameter,
         "sugar": sugar
+<<<<<<< HEAD
     }
     if request.args.get("debug") == "1":
         resp["_debug"] = {
@@ -604,6 +667,31 @@ def get_detection_image(detection_id, image_id):
 # ---------- 新增路由 ----------
 @app.route("/api/records", methods=["GET"])
 @login_required
+=======
+    })
+
+@app.route("/stats")
+def stats():
+    return jsonify(get_stats())
+
+@app.route("/history")
+def history():
+    records = get_history()
+    history_list = []
+    for r in records:
+        history_list.append({
+            "time": r[0],
+            "image": r[1],
+            "maturity": r[2],
+            "sugar": r[3],
+            "suggestion": r[4],
+            "class": r[5]
+        })
+    return jsonify(history_list)
+
+# ---------- 新增路由 ----------
+@app.route("/api/records", methods=["GET"])
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 def get_api_records():
     page = int(request.args.get("page", 1))
     page_size = int(request.args.get("pageSize", 5))
@@ -612,7 +700,10 @@ def get_api_records():
     start_date = request.args.get("startDate", "")
     end_date = request.args.get("endDate", "")
     result = query_records_with_filters(
+<<<<<<< HEAD
         user_id=g.user_id,
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
         page=page,
         page_size=page_size,
         image_name=image_name,
@@ -623,23 +714,34 @@ def get_api_records():
     return jsonify(result)
 
 @app.route("/record/<int:record_id>", methods=["DELETE"])
+<<<<<<< HEAD
 @login_required
 def delete_record(record_id):
     success = delete_detection_by_id(record_id, g.user_id)
+=======
+def delete_record(record_id):
+    success = delete_detection_by_id(record_id)
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
     if success:
         return '', 200
     else:
         return jsonify({"error": "记录不存在"}), 404
 
 @app.route("/api/records/export", methods=["GET"])
+<<<<<<< HEAD
 @login_required
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 def export_records():
     image_name = request.args.get("imageName", "")
     maturity = request.args.get("maturity", "")
     start_date = request.args.get("startDate", "")
     end_date = request.args.get("endDate", "")
     records = query_all_records_with_filters(
+<<<<<<< HEAD
         user_id=g.user_id,
+=======
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
         image_name=image_name,
         maturity=maturity,
         start_date=start_date,
@@ -659,6 +761,7 @@ def export_records():
     )
 
 # ---------- 首页仪表盘接口 ----------
+<<<<<<< HEAD
 @app.route("/api/dashboard")
 @login_required
 def dashboard_api():
@@ -894,12 +997,21 @@ def change_password():
     log_audit(g.user_id, "change_password", ip=request.remote_addr)
     
     return jsonify({"success": True, "message": "密码修改成功"})
+=======
+@app.route("/dashboard")
+def dashboard():
+    return jsonify(get_dashboard_stats())
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
 
 # ==========================
 # 启动
 # ==========================
 if __name__ == "__main__":
+<<<<<<< HEAD
     host = os.environ.get("HOST", "0.0.0.0")
     port = int(os.environ.get("PORT", "5000"))
     debug = os.environ.get("FLASK_DEBUG", "0") == "1"
     app.run(host=host, port=port, debug=debug)
+=======
+    app.run(host="0.0.0.0", port=5000, debug=True)
+>>>>>>> 7079b227ca083c9a5c6f6f657f1a47413732c7ad
