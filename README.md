@@ -1,15 +1,3 @@
-我来帮你创建一个专业的 README 文件。首先让我检查一下项目的关键信息：
-
-
-
-
-**已查看文件** *requirements.txt 1-50*
-
-**已查看文件** *app.py 1-100*
-
-
-现在我来为你创建一个专业的 README 文件：
-
 ```markdown
 # 🍊 柑橘智能检测系统
 
@@ -109,7 +97,6 @@
 ### 系统架构图
 
 ```
-
 ┌─────────────┐      ┌──────────────┐      ┌─────────────┐
 │   前端界面   │      │  Flask 后端  │      │  AI 模型层   │
 │             │ HTTP │              │      │             │
@@ -125,6 +112,7 @@
                      │ • uploads/   │
                      └──────────────┘
 ```
+
 ## 🚀 快速开始
 
 ### 环境要求
@@ -137,41 +125,40 @@
 
 #### 1. 克隆项目
 
-```
-bash
+```bash
 git clone https://github.com/your-username/YOLO_Citrus_Project.git
 cd YOLO_Citrus_Project
 ```
+
 #### 2. 安装依赖
 
-```
-bash
+```bash
 pip install -r requirements.txt
 ```
+
 #### 3. 准备模型
 
 下载 YOLOv10n 预训练权重（如果根目录没有）：
 
-```
-bash
+```bash
 # 方式 1：使用 Ultralytics 官方模型
 yolo download yolov10n.pt
 
 # 方式 2：手动下载后放到项目根目录
 # 下载地址：https://github.com/ultralytics/assets/releases/download/v0.0.0/yolov10n.pt
 ```
+
 #### 4. 初始化数据库
 
 数据库会在首次运行时自动创建：
 
-```
-bash
+```bash
 python app.py
 ```
+
 #### 5. 启动服务
 
-```
-bash
+```bash
 # 默认端口 5000
 python app.py
 
@@ -184,12 +171,12 @@ set MODEL_PATH=yolov10n.pt
 set JWT_SECRET=your-secret-key
 python app.py
 ```
+
 访问 http://localhost:5000 查看系统
 
 ### Docker 部署（可选）
 
-```
-bash
+```bash
 # 构建镜像
 docker build -t citrus-detection .
 
@@ -199,10 +186,10 @@ docker run -d -p 5000:5000 \
   -v $(pwd)/citrus.db:/app/citrus.db \
   citrus-detection
 ```
+
 ## 📁 项目结构
 
 ```
-
 YOLO_Citrus_Project/
 ├── app.py                      # Flask 主应用
 ├── auth.py                     # 认证授权模块
@@ -250,13 +237,13 @@ YOLO_Citrus_Project/
     ├── test_auth_isolation.py
     └── ...
 ```
+
 ## 📡 API 文档
 
 ### 认证接口
 
 #### 发送验证码
-```
-http
+```http
 POST /api/auth/send-code
 Content-Type: application/json
 
@@ -265,9 +252,9 @@ Content-Type: application/json
   "type": "register"
 }
 ```
+
 #### 注册
-```
-http
+```http
 POST /api/auth/register
 Content-Type: application/json
 
@@ -278,9 +265,9 @@ Content-Type: application/json
   "password": "password123"
 }
 ```
+
 #### 登录
-```
-http
+```http
 POST /api/auth/login
 Content-Type: application/json
 
@@ -296,11 +283,11 @@ Content-Type: application/json
   "role": "worker"
 }
 ```
+
 ### 检测接口
 
 #### 图像检测
-```
-http
+```http
 POST /detect
 Authorization: Bearer <token>
 Content-Type: multipart/form-data
@@ -322,17 +309,17 @@ image: <file>
   ]
 }
 ```
+
 #### 获取历史记录
-```
-http
+```http
 GET /api/records?limit=10&class_name=ripe_orange
 Authorization: Bearer <token>
 ```
+
 ### 统计接口
 
 #### 获取统计数据
-```
-http
+```http
 GET /api/stats
 Authorization: Bearer <token>
 
@@ -344,11 +331,11 @@ Authorization: Bearer <token>
   "avg_sugar": 13.2
 }
 ```
+
 ### AI 问答接口
 
 #### 智能问答
-```
-http
+```http
 POST /chat
 Authorization: Bearer <token>
 Content-Type: application/json
@@ -365,6 +352,7 @@ Content-Type: application/json
   "latency_ms": 1250
 }
 ```
+
 完整 API 文档请参阅 [API_DOCS.md](API_DOCS.md)
 
 ## 📊 性能指标
@@ -402,7 +390,7 @@ Content-Type: application/json
 ### 1. 注册与登录
 
 1. 访问 http://localhost:5000
-2. 点击"注册账号"
+2. 点击“注册账号”
 3. 填写邮箱、用户名、密码
 4. 输入验证码完成注册
 5. 使用账号密码登录
@@ -410,14 +398,14 @@ Content-Type: application/json
 ### 2. 上传检测
 
 1. 登录后进入系统首页
-2. 点击"开始检测"
+2. 点击“开始检测”
 3. 选择图片或拖拽上传
 4. 等待检测结果（约 1-2 秒）
 5. 查看成熟度、糖度、建议
 
 ### 3. 查看历史
 
-1. 点击"历史数据"
+1. 点击“历史数据”
 2. 按条件筛选（日期、类别）
 3. 查看统计图表
 4. 导出 CSV 数据
@@ -456,8 +444,7 @@ Content-Type: application/json
 ### Q4: 如何更换自己的模型？
 
 **A:**
-```
-bash
+```bash
 # 1. 训练自己的模型
 yolo detect train data=citrus_dataset/data.yaml model=yolov10n.pt epochs=100
 
@@ -468,6 +455,7 @@ cp runs/detect/train/weights/best.pt ./my_model.pt
 set MODEL_PATH=my_model.pt
 python app.py
 ```
+
 ### Q5: 数据库在哪里？可以删除吗？
 
 **A:** 
