@@ -1,4 +1,4 @@
-```markdown
+
 # 🍊 柑橘智能检测系统
 
 基于 YOLOv10 和 Flask 的 AI 农业检测平台，实现柑橘成熟度识别、病害检测与糖度预测的全栈解决方案。
@@ -496,14 +496,14 @@ python app.py
 - **Ultralytics** - YOLOv10 模型
 - **Flask 团队** - Web 框架
 - **DeepSeek** - AI 问答支持
-- **学校/实验室** - 指导与支持
+- **Southwest University** - 指导与支持
 
 ## 📞 联系方式
 
 如有问题或合作意向，请通过以下方式联系：
 
-- 📧 Email: your-email@example.com
-- 💬 Issues: [GitHub Issues](https://github.com/your-username/YOLO_Citrus_Project/issues)
+- 📧 Email: xiaoyanping0.0@gmail.com
+- 💬 Issues: [GitHub Issues](https://github.com/Yonikyoya/YOLO_Citrus_Project/issues)
 
 ---
 
@@ -511,7 +511,7 @@ python app.py
 
 **⭐ 如果这个项目对你有帮助，请给一个 Star! ⭐**
 
-Made with ❤️ by [Your Name](https://github.com/your-username)
+Made with ❤️ by [Your Name](https://github.com/Yonikyoya)
 
 </div>
 ```
